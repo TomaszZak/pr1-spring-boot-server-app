@@ -10,6 +10,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 public class EnvironmentHelper {
@@ -18,18 +19,25 @@ public class EnvironmentHelper {
 
     public static String getResourcePathByFileName(String resourceName) {
         URL sqlScriptUrl2 = ClassLoader.getSystemResource(resourceName);
-        return sqlScriptUrl2.toString();
+        String resourceDontExist = "ERROR - Resource: " + resourceName + " nie istnieje!!!!";
+        return (sqlScriptUrl2 == null) ? resourceDontExist : sqlScriptUrl2.toString();
     }
 
     public static String getResourcePropertyByPropertyName(String resourceName, String propertyName) {
         Resource resource = new ClassPathResource(resourceName);
+        String result = "";
+        String resourceDontExist = "Resource: " + resourceName + " nie istnieje!!!!";
         try {
-            Properties props = PropertiesLoaderUtils.loadProperties(resource);
-            return props.getProperty(propertyName);
+            if(resource!=null) {
+                Properties props = PropertiesLoaderUtils.loadProperties(resource);
+                result = Optional.ofNullable(props.getProperty(propertyName))
+                        .orElse(resourceDontExist);
+            } else result = resourceDontExist;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return e.toString();
         }
+        return result;
     }
 
     public static String findProperty(List<Resource> resources, String propertyName) {
