@@ -1,0 +1,12 @@
+project.buildscript {
+    ext {
+        apply from: 'properties.gradle'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_VER}"
+        classpath "io.swagger:swagger-codegen:2.2.2"
+    }
+}

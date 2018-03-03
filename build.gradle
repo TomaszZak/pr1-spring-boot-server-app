@@ -1,0 +1,46 @@
+buildscript {
+	apply from: 'buildscript.gradle'
+}
+
+ext {
+	apply from: 'properties.gradle'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = "SpringBootServerApp"
+	version =  '0.1.0'
+	group = 'com.tzak'
+	sourceCompatibility = 1.8
+}
+
+springBoot{
+	layout = "ZIP"
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+
+	//
+	compile("org.springframework.boot:spring-boot-starter")
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.webjars:bootstrap:3.3.7')
+	runtime("org.springframework.boot:spring-boot-devtools")
+
+	//swagger
+	compile("io.springfox:springfox-swagger2:${SWAGGER_VER}")
+	compile("io.springfox:springfox-swagger-ui:${SWAGGER_VER}")
+	compile('org.apache.commons:commons-configuration2:2.2')
+	compile('commons-beanutils:commons-beanutils:1.9.3')
+
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+
+}

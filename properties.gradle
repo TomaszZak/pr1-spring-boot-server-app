@@ -1,0 +1,4 @@
+ext {
+    SPRING_VER = '1.5.4.RELEASE'
+    SWAGGER_VER = '2.7.0'
+}
