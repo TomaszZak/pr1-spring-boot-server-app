@@ -54,13 +54,13 @@ public class ServerMainController {
 
         ;
 
-        try {
+//        try {
             //TODO do dokończenia - nie znajduje loader.properties
-            List<Resource> resources = Arrays.asList(resourceResolver.getResources("classpath:*"));
-            EnvironmentHelper.findProperty(resources,"loader.path");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//            List<Resource> resources = Arrays.asList(resourceResolver.getResources("classpath:*"));
+//            EnvironmentHelper.findProperty(resources,"loader.path");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         return stringBuilder.toString();
     }
