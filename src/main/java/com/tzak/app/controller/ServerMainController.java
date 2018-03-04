@@ -1,27 +1,15 @@
 package com.tzak.app.controller;
 
-import com.tzak.app.SpringBootServerAppApplication;
-import com.tzak.app.helpers.EnvironmentHelper;
+import com.tzak.app.helpers.ServerResourceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
+import java.net.URLClassLoader;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
 
 @RequestMapping("/api")
 @RestController
@@ -46,14 +34,12 @@ public class ServerMainController {
                 .append("Environment Info:")
                 .append("\n user.dir: " + System.getProperty("user.dir"))
                 .append("\n File loader.properties dir: "
-                        + EnvironmentHelper.getResourcePathByFileName(EnvironmentHelper.LOADER_PROPERTIES_NAME))
+                        + ServerResourceHelper.getResourcePathByFileName(ServerResourceHelper.LOADER_PROPERTIES_NAME))
                 .append("\n - loader.main : "
-                        + EnvironmentHelper.getResourcePropertyByPropertyName(EnvironmentHelper.LOADER_PROPERTIES_NAME, "loader.main"))
+                        + ServerResourceHelper.getResourcePropertyByPropertyName(ServerResourceHelper.LOADER_PROPERTIES_NAME, "loader.main"))
                 .append("\n - loader.path : "
-                        + EnvironmentHelper.getResourcePropertyByPropertyName(EnvironmentHelper.LOADER_PROPERTIES_NAME, "loader.path"))
-
+                        + ServerResourceHelper.getResourcePropertyByPropertyName(ServerResourceHelper.LOADER_PROPERTIES_NAME, "loader.path"))
         ;
-
 //        try {
             //TODO do dokończenia - nie znajduje loader.properties
 //            List<Resource> resources = Arrays.asList(resourceResolver.getResources("classpath:*"));
@@ -61,7 +47,44 @@ public class ServerMainController {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+        return stringBuilder.toString();
+    }
 
+    @RequestMapping(value = "/getResourcesDirs", method = RequestMethod.GET)
+    public String getResourcesDirs() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String dir: ServerResourceHelper.getResourcesDirs()) {
+            stringBuilder.append(dir + "\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    @RequestMapping(value = "/getResourcesFilesPathsAndNamesNoJarsCheck", method = RequestMethod.GET)
+    public String getResourcesFilesPathsAndNamesNoJarsCheck() {
+        URLClassLoader urlClassLoader = (URLClassLoader) URLClassLoader.getSystemClassLoader();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String dir: ServerResourceHelper.getResourcesFilesPathsAndNamesNoJarsCheck(Arrays.asList(urlClassLoader.getURLs()))) {
+            stringBuilder.append(dir + "\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    @RequestMapping(value = "/getReloadableUrls", method = RequestMethod.GET)
+    public String getReloadableUrls() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String dir: ServerResourceHelper.getReloadableUrlsStringList()) {
+            stringBuilder.append(dir + "\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    @RequestMapping(value = "/getReloadableResourcesFiles", method = RequestMethod.GET)
+    public String getReloadableResourcesFiles() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String dir: ServerResourceHelper.getResourcesFilesPathsAndNamesNoJarsCheck(ServerResourceHelper.getReloadableUrls())) {
+            stringBuilder.append(dir + "\n");
+            //TODO - tutaj dołożyć listę plików
+        }
         return stringBuilder.toString();
     }
 

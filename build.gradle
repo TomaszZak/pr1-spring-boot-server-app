@@ -7,7 +7,6 @@ ext {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
@@ -27,13 +26,9 @@ repositories {
 }
 
 dependencies {
-
-	//
-	compile("org.springframework.boot:spring-boot-starter")
-	compile("org.springframework.boot:spring-boot-starter-web")
-	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile libs.spring
+	compile libs.springDevTools
 	compile('org.webjars:bootstrap:3.3.7')
-	runtime("org.springframework.boot:spring-boot-devtools")
 
 	//swagger
 	compile("io.springfox:springfox-swagger2:${SWAGGER_VER}")

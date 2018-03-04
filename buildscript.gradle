@@ -1,9 +1,9 @@
 project.buildscript {
-    ext {
-        apply from: 'properties.gradle'
-    }
     repositories {
         mavenCentral()
+    }
+    ext {
+        apply from: 'properties.gradle'
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_VER}"

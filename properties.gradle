@@ -1,4 +1,14 @@
 ext {
     SPRING_VER = '1.5.4.RELEASE'
     SWAGGER_VER = '2.7.0'
+
+    libs = [
+            spring      : [
+                    "org.springframework.boot:spring-boot-starter:" + SPRING_VER,
+                    "org.springframework.boot:spring-boot-starter-web:" + SPRING_VER,
+                    'org.springframework.boot:spring-boot-starter-thymeleaf:' + SPRING_VER
+            ],
+            springDevTools : 'org.springframework.boot:spring-boot-devtools:' + SPRING_VER
+    ]
+
 }
